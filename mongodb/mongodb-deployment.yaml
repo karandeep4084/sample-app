@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+  labels:
+    app: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo:4.4.0
+        ports:
+          - containerPort: 27017
+
+        volumeMounts:
+        - mountPath: "/data/db"
+          name: mongodb-persistent-storage
+
+      volumes:
+      - name: mongodb-persistent-storage
+        persistentVolumeClaim:
+          claimName: mongo-pv1-claim 
+          #      - name: mongodb-configuration-file
+          #configMap:
+          #name: mongodb-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017                  
