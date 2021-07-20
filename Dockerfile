@@ -10,7 +10,7 @@ COPY secrets/variables.env ./.env
 COPY ./package*.json ./
 
 RUN pwd
-RUN npm install
+#RUN npm install
 
 RUN npm install nodemon
 RUN pwd
@@ -19,6 +19,6 @@ COPY . /sample_app/
 
 RUN pwd
 RUN ls -la
-
 EXPOSE 3000
+RUN npm install
 CMD [ "npm", "start" ]
